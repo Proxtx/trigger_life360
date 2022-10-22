@@ -15,3 +15,19 @@ const applyOptionArray = async (elem, options) => {
 
 applyOptionArray(userSelect, window.triggerGuiData.users);
 applyOptionArray(placeSelect, window.triggerGuiData.places);
+
+window.getTriggerConfiguration = () => {
+  return {
+    text:
+      userSelect.value +
+      " " +
+      movementSelect.value +
+      (movementSelect.value == "arrives" ? " at " : " ") +
+      placeSelect.value,
+    data: {
+      user: userSelect.value,
+      movement: movementSelect.value,
+      place: placeSelect.value,
+    },
+  };
+};
