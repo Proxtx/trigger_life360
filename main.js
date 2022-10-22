@@ -36,14 +36,14 @@ export class Trigger {
     let userPlaces = await this.api.getUserPlaces(this.config.pwd);
     if (this.userPlaces[data.user] == userPlaces[data.user]) return false;
     if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
-      this.userPlaces = userPlaces;
+      this.userPlaces[data.user] = userPlaces[data.user];
       return true;
     }
     if (data.movement == "leaves" && this.userPlaces[data.user] == data.place) {
-      this.userPlaces = userPlaces;
+      this.userPlaces[data.user] = userPlaces[data.user];
       return true;
     }
 
-    this.userPlaces = userPlaces;
+    this.userPlaces[data.user] = userPlaces[data.user];
   };
 }
