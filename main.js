@@ -43,5 +43,7 @@ export class Trigger {
       this.userPlaces = userPlaces;
       return true;
     }
+
+    this.userPlaces = userPlaces;
   };
 }
