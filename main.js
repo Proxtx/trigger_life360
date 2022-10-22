@@ -3,6 +3,8 @@ import { genCombine } from "@proxtx/combine-rest/request.js";
 import fs from "fs/promises";
 
 export class Trigger {
+  userPlaces = {};
+
   constructor(config, folder) {
     this.config = config;
     this.folder = folder;
@@ -28,5 +30,18 @@ export class Trigger {
     places = Object.keys(places);
 
     return { html: this.html, handler: this.handler, data: { users, places } };
+  };
+
+  triggers = async (data) => {
+    let userPlaces = await this.api.getUserPlaces(this.config.pwd);
+    if (this.userPlaces[data.user] == userPlaces[data.user]) return false;
+    if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
+      this.userPlaces = userPlaces;
+      return true;
+    }
+    if (data.movement == "leaves" && this.userPlaces[data.user] == data.place) {
+      this.userPlaces = userPlaces;
+      return true;
+    }
   };
 }
