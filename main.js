@@ -32,18 +32,23 @@ export class Trigger {
     return { html: this.html, handler: this.handler, data: { users, places } };
   };
 
-  triggers = async (data) => {
+  triggers = async (data, flowName) => {
     let userPlaces = await this.api.getUserPlaces(this.config.pwd);
-    if (this.userPlaces[data.user] == userPlaces[data.user]) return false;
+    if (!userPlaces || userPlaces.length == 0) return false;
+    let identifier = data.user + flowName;
+    if (this.userPlaces[identifier] == userPlaces[data.user]) return false;
     if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
-      this.userPlaces[data.user] = userPlaces[data.user];
+      this.userPlaces[identifier] = userPlaces[data.user];
       return true;
     }
-    if (data.movement == "leaves" && this.userPlaces[data.user] == data.place) {
-      this.userPlaces[data.user] = userPlaces[data.user];
+    if (
+      data.movement == "leaves" &&
+      this.userPlaces[identifier] == data.place
+    ) {
+      this.userPlaces[identifier] = userPlaces[data.user];
       return true;
     }
 
-    this.userPlaces[data.user] = userPlaces[data.user];
+    this.userPlaces[identifier] = userPlaces[data.user];
   };
 }
