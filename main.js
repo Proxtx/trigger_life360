@@ -32,10 +32,10 @@ export class Trigger {
     return { html: this.html, handler: this.handler, data: { users, places } };
   };
 
-  triggers = async (data, flowName) => {
+  triggers = async (data, actionName) => {
     let userPlaces = await this.api.getUserPlaces(this.config.pwd);
     if (!userPlaces || userPlaces.length == 0) return false;
-    let identifier = data.user + flowName;
+    let identifier = data.user + actionName;
     if (this.userPlaces[identifier] == userPlaces[data.user]) return false;
     if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
       this.userPlaces[identifier] = userPlaces[data.user];
