@@ -4,6 +4,7 @@ import fs from "fs/promises";
 
 export class Trigger {
   userPlaces = {};
+  userActionTrigger = {};
 
   constructor(config, folder) {
     this.config = config;
@@ -38,6 +39,7 @@ export class Trigger {
     let identifier = data.user + actionName;
     if (this.userPlaces[identifier] == userPlaces[data.user]) return false;
     if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
+      this.userActionTrigger = {};
       this.userPlaces[identifier] = userPlaces[data.user];
       return true;
     }
@@ -45,8 +47,16 @@ export class Trigger {
       data.movement == "leaves" &&
       this.userPlaces[identifier] == data.place
     ) {
-      this.userPlaces[identifier] = userPlaces[data.user];
-      return true;
+      if (this.userActionTrigger[identifier] > 1) {
+        this.userActionTrigger = {};
+        this.userPlaces[identifier] = userPlaces[data.user];
+        return true;
+      } else {
+        this.userActionTrigger[identifier]
+          ? this.userActionTrigger++
+          : (this.userActionTrigger = 1);
+        return false;
+      }
     }
 
     this.userPlaces[identifier] = userPlaces[data.user];
