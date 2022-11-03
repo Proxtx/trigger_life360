@@ -42,8 +42,7 @@ export class Trigger {
       this.userActionTrigger = {};
       this.userPlaces[identifier] = userPlaces[data.user];
       return true;
-    }
-    if (
+    } else if (
       data.movement == "leaves" &&
       this.userPlaces[identifier] == data.place
     ) {
@@ -57,8 +56,6 @@ export class Trigger {
           : (this.userActionTrigger = 1);
         return false;
       }
-    }
-
-    this.userPlaces[identifier] = userPlaces[data.user];
+    } else this.userPlaces[identifier] = userPlaces[data.user];
   };
 }
