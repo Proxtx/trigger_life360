@@ -37,7 +37,7 @@ export class Trigger {
     if (!userPlaces || userPlaces.success === false) return false;
 
     let triggering = userPlaces[data.user] == data.place;
-    let returnBool = false;
+    let returnBool = !triggering;
 
     if (this.cashedUserPlaces[triggerConfig.id] == triggering) {
       returnBool = triggering;
