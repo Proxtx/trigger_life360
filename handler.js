@@ -1,7 +1,5 @@
-let userSelect = window.triggerGui.getElementsByClassName("userSelect")[0];
-let movementSelect =
-  window.triggerGui.getElementsByClassName("movementSelect")[0];
-let placeSelect = window.triggerGui.getElementsByClassName("placeSelect")[0];
+let userSelect = triggerGui.getElementsByClassName("userSelect")[0];
+let placeSelect = triggerGui.getElementsByClassName("placeSelect")[0];
 
 const applyOptionArray = async (elem, options) => {
   elem.innerHTML = "";
@@ -13,21 +11,15 @@ const applyOptionArray = async (elem, options) => {
   }
 };
 
-applyOptionArray(userSelect, window.triggerGuiData.users);
-applyOptionArray(placeSelect, window.triggerGuiData.places);
+applyOptionArray(userSelect, triggerGuiData.users);
+applyOptionArray(placeSelect, triggerGuiData.places);
 
-window.getTriggerConfiguration = () => {
+getTriggerConfiguration(() => {
   return {
-    text:
-      userSelect.value +
-      " " +
-      movementSelect.value +
-      (movementSelect.value == "arrives" ? " at " : " ") +
-      placeSelect.value,
+    text: userSelect.value + " is present at " + placeSelect.value,
     data: {
       user: userSelect.value,
-      movement: movementSelect.value,
       place: placeSelect.value,
     },
   };
-};
+});

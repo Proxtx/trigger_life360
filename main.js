@@ -3,7 +3,7 @@ import { genCombine } from "@proxtx/combine-rest/request.js";
 import fs from "fs/promises";
 
 export class Trigger {
-  userPlaces = {};
+  cashedUserPlaces = {};
 
   constructor(config, folder) {
     this.config = config;
@@ -32,27 +32,18 @@ export class Trigger {
     return { html: this.html, handler: this.handler, data: { users, places } };
   };
 
-  triggers = async (data, actionName) => {
+  triggers = async (data, triggerConfig) => {
     let userPlaces = await this.api.getUserPlaces(this.config.pwd);
     if (!userPlaces || userPlaces.success === false) return false;
-    let identifier = data.user + actionName;
-    if (this.userPlaces[identifier] == userPlaces[data.user]) return false;
-    if (data.movement == "arrives" && userPlaces[data.user] == data.place) {
-      this.userPlaces[identifier] = userPlaces[data.user];
-      return true;
-    }
-    if (
-      data.movement == "leaves" &&
-      this.userPlaces[identifier] == data.place
-    ) {
-      await new Promise((r) => setTimeout(r, 60000));
-      userPlaces = await this.api.getUserPlaces(this.config.pwd);
-      if (userPlaces[data.user] == data.place) return false;
-      this.userPlaces[identifier] = userPlaces[data.user];
-      return true;
+
+    let triggering = userPlaces[data.user] == data.place;
+    let returnBool = false;
+
+    if (this.cashedUserPlaces[triggerConfig.id] == triggering) {
+      returnBool = triggering;
     }
 
-    this.userPlaces[identifier] = userPlaces[data.user];
-    return false;
+    this.cashedUserPlaces[triggerConfig.id] = triggering;
+    return returnBool;
   };
 }
