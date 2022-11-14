@@ -38,6 +38,13 @@ export class Trigger {
       return this.cashedUserPlaces[triggerConfig.id];
 
     let triggering = userPlaces[data.user] == data.place;
+
+    if (triggering != this.cashedUserPlaces[triggerConfig.id]) {
+      await new Promise((r) => setTimeout(r, 60000));
+      userPlaces = await this.api.getUserPlaces(this.config.pwd);
+      triggering = userPlaces[data.user] == data.place;
+    }
+
     let returnBool = !triggering;
 
     if (this.cashedUserPlaces[triggerConfig.id] == triggering) {
