@@ -34,7 +34,8 @@ export class Trigger {
 
   triggers = async (data, triggerConfig) => {
     let userPlaces = await this.api.getUserPlaces(this.config.pwd);
-    if (!userPlaces || userPlaces.success === false) return false;
+    if (!userPlaces || userPlaces.success === false)
+      return this.cashedUserPlaces[triggerConfig.id];
 
     let triggering = userPlaces[data.user] == data.place;
     let returnBool = !triggering;
