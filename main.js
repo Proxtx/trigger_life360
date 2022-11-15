@@ -45,11 +45,11 @@ export class Trigger {
       triggering = userPlaces[data.user] == data.place;
     }
 
-    let returnBool = !triggering;
+    let returnBool = triggering;
 
-    if (this.cashedUserPlaces[triggerConfig.id] == triggering) {
+    /*if (this.cashedUserPlaces[triggerConfig.id] == triggering) {
       returnBool = triggering;
-    }
+    }*/
 
     this.cashedUserPlaces[triggerConfig.id] = triggering;
     return returnBool;
