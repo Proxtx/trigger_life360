@@ -23,3 +23,8 @@ getTriggerConfiguration(() => {
     },
   };
 });
+
+if (triggerPresetData) {
+  userSelect.value = triggerPresetData.user;
+  placeSelect.value = triggerPresetData.place;
+}
