@@ -40,9 +40,16 @@ export class Trigger {
     let triggering = userPlaces[data.user] == data.place;
 
     if (triggering != this.cashedUserPlaces[triggerConfig.id]) {
-      await new Promise((r) => setTimeout(r, 60000));
+      await new Promise((r) => setTimeout(r, 30000));
       userPlaces = await this.api.getUserPlaces(this.config.pwd);
-      triggering = userPlaces[data.user] == data.place;
+      let t2 = userPlaces[data.user] == data.place;
+      if (t2 == this.cashedUserPlaces[triggerConfig.id]) {
+        triggering = t2;
+      } else {
+        await new Promise((r) => setTimeout(r, 30000));
+        userPlaces = await this.api.getUserPlaces(this.config.pwd);
+        triggering = userPlaces[data.user] == data.place;
+      }
     }
 
     let returnBool = triggering;
